@@ -7,11 +7,22 @@ let TaxConstructor = function (pList) {
 }
 
 TaxConstructor.prototype.abstractProducts = (pList) => {
+    let productDetails = [];
+    pList && pList.forEach((item, i) => {
+        let prodObj = {}, 
+            productView = item.split('  ');
+        productView.splice(productView.length, 1); // extracting unwanted contents from the list
+
+        prodObj.qty = productView[0];
+        prodObj.product = productView[1];
+        prodObj.price = productView[2];
+    })
+
     return [];
 }
 
 const createProductReceipt = (productList) => {
-    let purchaseReceipt = new TaxConstructor(productList);
+    //let purchaseReceipt = new TaxConstructor(productList);
     return [];
 }
 
