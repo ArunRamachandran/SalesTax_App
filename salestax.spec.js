@@ -17,26 +17,26 @@ describe('salesTax', () => {
                 qty: 1,
                 price: 12.49,
                 basicSalesTax: 0,
-                importDuty: 0.65
+                importDuty: 0
             },
             {
                 product: 'music CD',
                 qty: 1,
                 price: 14.99,
                 basicSalesTax: 1.50,
-                importDuty: 0.75
+                importDuty: 0
             },
             {
                 product: 'chocolate bar',
                 qty: 1,
                 price: 0.85,
                 basicSalesTax: 0,
-                importDuty: 0.05
+                importDuty: 0
             }
         ];
 
         let productList = new TaxConstructor(inputSet);
-        expect(productList.products).toEqual([])
+        expect(productList.products).toEqual(expectedList);
     })
 
 });
