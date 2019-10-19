@@ -42,7 +42,12 @@ describe('salesTax', () => {
 
     it('should calculate the total bill amount by adding individual price + total taxes', () => {
         let expectedTotalamount = (12.49 * 1) + (14.99 * 1 + 1.50) + (0.85 * 1);
-        expect(productList.total).toEqual(parseFloat(roundingRule(expectedTotalamount)));
+        expect(productList.totalAmount).toEqual(parseFloat(roundingRule(expectedTotalamount)));
+    })
+
+    it('should calculate the total salesTax of the given product list', () => {
+        let expectedSalesTax = 0 + 1.50 + 0; 
+        expect(productList.totalSalesTax).toEqual(expectedSalesTax);
     })
 
 });

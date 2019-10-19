@@ -8,9 +8,9 @@ import {roundingRule} from './utils/roundingRule.utils';
  
 let TaxConstructor = function (pList) {
     this.products = this.abstractProducts(pList);
-    //this.classifiedProducts = this.getClassifiedProductsList(this.products);
-    this.total = this.calculateBillAmount(this.products);
-    //this.salesTax = this.calculateSalesTax(this.products, this.total);
+    this.combinedPricing = this.calculateBillAmount(this.products);
+    this.totalAmount = parseFloat(roundingRule(this.combinedPricing.totalAmount));
+    this.totalSalesTax = parseFloat(roundingRule(this.combinedPricing.totalSalesTax));
     //this.printReceipt = this.createReceipt(this.products, this.total, this.salesTax);
 }
 
@@ -37,13 +37,21 @@ TaxConstructor.prototype.abstractProducts = (pList) => {
 }
 
 TaxConstructor.prototype.calculateBillAmount = (pList) => {
-    let total = 0;
+    let totalAmount, totalSalesTax;
+    totalAmount = totalSalesTax = 0;
+
     pList && pList.forEach((product) => {
-        let individualPricing = (product.price * product.qty) + product.basicSalesTax + product.importDuty;
-        total += individualPricing;
+        let productTotal = (product.price * product.qty) + product.basicSalesTax + product.importDuty;
+        let productTax = product.basicSalesTax + product.importDuty;
+
+        totalAmount += productTotal;
+        totalSalesTax += productTax;
     });
 
-    return parseFloat(roundingRule(total));
+    return {
+        totalAmount,
+        totalSalesTax
+    }
 }
 
 const createProductReceipt = (productList) => {
