@@ -3,10 +3,10 @@ import {
     isImportDutyApplicable,
     addSalesTax,
     addImportDuty
-} from './utils/taxCalculator.utils'
-
+} from './utils/taxCalculator.utils';
+import {roundingRule} from './utils/roundingRule.utils';
+ 
 let TaxConstructor = function (pList) {
-    console.log(">>>>>> constructor : pList : ", pList);
     this.products = this.abstractProducts(pList);
     //this.classifiedProducts = this.getClassifiedProductsList(this.products);
     this.total = this.calculateBillAmount(this.products);
@@ -27,8 +27,8 @@ TaxConstructor.prototype.abstractProducts = (pList) => {
         prodObj.qty = parseFloat(productView[0]);
         prodObj.product = productView.splice(1, productView.length - 2).join(" ");
         prodObj.price = parseFloat(productView[productView.length - 1]);
-        prodObj.basicSalesTax = isSalesTaxApplicable(prodObj.product) ? addSalesTax(prodObj.price, prodObj.qty) : 0;
-        prodObj.importDuty = isImportDutyApplicable(prodObj.product) ? addImportDuty(prodObj.price, prodObj.qty): 0;
+        prodObj.basicSalesTax = isSalesTaxApplicable(prodObj.product) ? addSalesTax(prodObj.price, prodObj.qty) : 0; /* tax computing logic based on qty */
+        prodObj.importDuty = isImportDutyApplicable(prodObj.product) ? addImportDuty(prodObj.price, prodObj.qty): 0; /* tax computation logic based on qty */
 
         productDetails.push(prodObj)
     })
@@ -37,7 +37,13 @@ TaxConstructor.prototype.abstractProducts = (pList) => {
 }
 
 TaxConstructor.prototype.calculateBillAmount = (pList) => {
+    let total = 0;
+    pList && pList.forEach((product) => {
+        let individualPricing = (product.price * product.qty) + product.basicSalesTax + product.importDuty;
+        total += individualPricing;
+    });
 
+    return parseFloat(roundingRule(total));
 }
 
 const createProductReceipt = (productList) => {

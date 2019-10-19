@@ -1,10 +1,12 @@
 import {createProductReceipt, TaxConstructor} from './salesTax';
+import {roundingRule} from './utils/roundingRule.utils';
 
 describe('salesTax', () => {
-    let inputSet;
+    let inputSet, productList;
 
     beforeEach(() => {
         inputSet = ['1 book at 12.49', '1 music CD at 14.99', '1 chocolate bar at 0.85'];
+        productList = new TaxConstructor(inputSet);
     })
     it('should execute custom fn', () => {
         expect(createProductReceipt(inputSet)).toEqual([]);
@@ -35,8 +37,12 @@ describe('salesTax', () => {
             }
         ];
 
-        let productList = new TaxConstructor(inputSet);
         expect(productList.products).toEqual(expectedList);
+    })
+
+    it('should calculate the total bill amount by adding individual price + total taxes', () => {
+        let expectedTotalamount = (12.49 * 1) + (14.99 * 1 + 1.50) + (0.85 * 1);
+        expect(productList.total).toEqual(parseFloat(roundingRule(expectedTotalamount)));
     })
 
 });
