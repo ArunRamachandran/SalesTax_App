@@ -9,9 +9,9 @@ import {roundingRule} from './utils/roundingRule.utils';
 let TaxConstructor = function (pList) {
     this.products = this.abstractProducts(pList);
     this.combinedPricing = this.calculateBillAmount(this.products);
-    this.totalAmount = parseFloat(roundingRule(this.combinedPricing.totalAmount));
+    this.totalAmount = parseFloat(this.combinedPricing.totalAmount.toFixed(2)); /* rounding rule isn't applicable for total pricing */
     this.totalSalesTax = parseFloat(roundingRule(this.combinedPricing.totalSalesTax));
-    //this.printReceipt = this.createReceipt(this.products, this.total, this.salesTax);
+    this.getReceipt = this.createReceipt(this.products, this.totalAmount, this.totalSalesTax);
 }
 
 TaxConstructor.prototype.abstractProducts = (pList) => {
@@ -52,6 +52,24 @@ TaxConstructor.prototype.calculateBillAmount = (pList) => {
         totalAmount,
         totalSalesTax
     }
+}
+
+TaxConstructor.prototype.createReceipt = (pList, totalAmount, totalSalesTax) => {
+    let receipt = {};
+
+    receipt.items = [];
+    receipt.salesTaxes = totalSalesTax;
+    receipt.total = totalAmount;
+
+    pList && pList.length && pList.forEach((product) => {
+        receipt.items.push({
+            qty: product.qty,
+            product: product.product,
+            price: product.price
+        });
+    })
+
+    return receipt;
 }
 
 const createProductReceipt = (productList) => {

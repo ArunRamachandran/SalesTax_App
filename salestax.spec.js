@@ -42,12 +42,26 @@ describe('salesTax', () => {
 
     it('should calculate the total bill amount by adding individual price + total taxes', () => {
         let expectedTotalamount = (12.49 * 1) + (14.99 * 1 + 1.50) + (0.85 * 1);
-        expect(productList.totalAmount).toEqual(parseFloat(roundingRule(expectedTotalamount)));
+        expect(productList.totalAmount).toEqual(parseFloat(expectedTotalamount.toFixed(2)));
     })
 
     it('should calculate the total salesTax of the given product list', () => {
         let expectedSalesTax = 0 + 1.50 + 0; 
         expect(productList.totalSalesTax).toEqual(expectedSalesTax);
+    })
+
+    it('should create the final product receipt', () => {
+        let expectedReceipt = {
+            items: [
+                {qty: 1, product: 'book', price: 12.49},
+                {qty: 1, product: 'music CD', price: 14.99},
+                {qty: 1, product: 'chocolate bar', price: 0.85}
+            ],
+            salesTaxes: 1.50,
+            total: 29.83
+        }
+
+        expect(productList.getReceipt).toEqual(expectedReceipt);
     })
 
 });
