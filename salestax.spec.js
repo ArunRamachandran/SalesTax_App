@@ -1,4 +1,4 @@
-import {createProductReceipt, TaxConstructor} from './salesTax';
+import {createShoppingCart, TaxConstructor} from './salesTax';
 import {roundingRule} from './utils/roundingRule.utils';
 
 describe('salesTax', () => {
@@ -8,8 +8,10 @@ describe('salesTax', () => {
         inputSet = ['1 book at 12.49', '1 music CD at 14.99', '1 chocolate bar at 0.85'];
         productList = new TaxConstructor(inputSet);
     })
-    it('should execute custom fn', () => {
-        expect(createProductReceipt(inputSet)).toEqual([]);
+
+    it('should create an instance of TaxConstructor', () => {
+        let prodObj = createShoppingCart(inputSet);
+        expect(prodObj).toBeInstanceOf(TaxConstructor);
     })
 
     it('should read the input & return the list of products', () => {
@@ -54,7 +56,7 @@ describe('salesTax', () => {
         let expectedReceipt = {
             items: [
                 {qty: 1, product: 'book', price: 12.49},
-                {qty: 1, product: 'music CD', price: 14.99},
+                {qty: 1, product: 'music CD', price: 16.49},
                 {qty: 1, product: 'chocolate bar', price: 0.85}
             ],
             salesTaxes: 1.50,

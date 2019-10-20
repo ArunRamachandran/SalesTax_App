@@ -12,6 +12,7 @@ describe('taxCalculator', () => {
         expect(isSalesTaxApplicable('music CD')).toEqual(true);
         expect(isSalesTaxApplicable('imported bottle of perfume')).toEqual(true);
         expect(isSalesTaxApplicable('packet of headache pills')).toEqual(false);
+        expect(isSalesTaxApplicable('1 imported box of chocolates')).toEqual(false);
     })
 
     it('should identify importDuty applicable product', () => {

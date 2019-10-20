@@ -4,14 +4,16 @@
   "description": "",
   "main": "salesTax.js",
   "scripts": {
-    "run": "node salesTax.js",
+    "start": "babel-node salesTax.js",
     "test": "jest"
   },
   "keywords": [],
   "author": "Arun Ramachandran",
   "license": "ISC",
   "devDependencies": {
+    "@babel/node": "^7.6.3",
     "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2",
     "babel-core": "^6.26.3",
     "babel-jest": "^24.9.0",
     "babel-polyfill": "^6.26.0",

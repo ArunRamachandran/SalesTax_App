@@ -65,19 +65,43 @@ TaxConstructor.prototype.createReceipt = (pList, totalAmount, totalSalesTax) => 
         receipt.items.push({
             qty: product.qty,
             product: product.product,
-            price: product.price
+            price: parseFloat((product.price + product.basicSalesTax + product.importDuty).toFixed(2))
         });
     })
 
     return receipt;
 }
 
-const createProductReceipt = (productList) => {
-    //let purchaseReceipt = new TaxConstructor(productList);
-    return [];
+const createShoppingCart = (productList) => {
+    let purchaseReceipt, 
+        productObj = new TaxConstructor(productList);
+
+    purchaseReceipt = productObj.getReceipt;
+
+    if (purchaseReceipt) {
+        purchaseReceipt.items && purchaseReceipt.items.length &&
+            purchaseReceipt.items.forEach((item) => {
+                console.log(`${item.qty} ${item.product} : ${item.price}`);
+            })
+        console.log('Sales Taxes: ', purchaseReceipt.salesTaxes);
+        console.log('Total: ', purchaseReceipt.total);
+        console.log("\n");
+    } else {
+        console.log("Sorry. Couldn't create the purchase receipt.\n Try again ");
+    }
+
+    return productObj;
 }
+
+const inputSet1 = ['1 book at 12.49', '1 music CD at 14.99', '1 chocolate bar at 0.85'];
+const inputSet2 = ['1 imported box of chocolates at 10.00', '1 imported bottle of perfume at 47.50'];
+const inputSet3 = ['1 imported bottle of perfume at 27.99', '1 bottle of perfume at 18.99', '1 packet of headache pills at 9.75', '1 box of imported chocolates at 11.25'];
+
+createShoppingCart(inputSet1);
+createShoppingCart(inputSet2);
+createShoppingCart(inputSet3);
 
 export {
     TaxConstructor,
-    createProductReceipt
+    createShoppingCart
 }
