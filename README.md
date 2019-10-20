@@ -42,3 +42,9 @@ A step by step series of examples that tell you how to get a development env run
 ```
  npm run test
 ```
+
+### Continuous Integration
+Link to access Travis CI dashboard : 
+```
+https://travis-ci.com/ArunRamachandran/SalesTax_App
+```
