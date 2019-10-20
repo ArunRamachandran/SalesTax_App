@@ -5,7 +5,6 @@ const isSalesTaxApplicable = (pList) => {
     let intersection,
         product = pList.split(" "); 
     
-    //intersection = product.filter(value => salesTaxExceptionsList.includes(value));
     intersection = product.filter(value => {
         let isMatchingElement = false;
         salesTaxExceptionsList.forEach((item) => {
