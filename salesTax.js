@@ -11,12 +11,11 @@ let TaxConstructor = function (pList) {
     this.combinedPricing = this.calculateBillAmount(this.products);
     this.totalAmount = parseFloat(this.combinedPricing.totalAmount.toFixed(2)); /* rounding rule isn't applicable for total pricing */
     this.totalSalesTax = parseFloat(roundingRule(this.combinedPricing.totalSalesTax));
-    this.getReceipt = this.createReceipt(this.products, this.totalAmount, this.totalSalesTax);
+    this.receipt = this.createReceipt(this.products, this.totalAmount, this.totalSalesTax);
 }
 
 TaxConstructor.prototype.abstractProducts = (pList) => {
-    let productDetails = [];
-    pList && pList.forEach((item, i) => {
+    let productDetails = pList.map((item, i) => {
         let prodObj = {}, 
             productView,
             initialProdList = item.split(" ");
@@ -30,7 +29,7 @@ TaxConstructor.prototype.abstractProducts = (pList) => {
         prodObj.basicSalesTax = isSalesTaxApplicable(prodObj.product) ? addSalesTax(prodObj.price, prodObj.qty) : 0; /* tax computing logic based on qty */
         prodObj.importDuty = isImportDutyApplicable(prodObj.product) ? addImportDuty(prodObj.price, prodObj.qty): 0; /* tax computation logic based on qty */
 
-        productDetails.push(prodObj)
+        return prodObj;
     })
 
     return productDetails;
@@ -40,7 +39,7 @@ TaxConstructor.prototype.calculateBillAmount = (pList) => {
     let totalAmount, totalSalesTax;
     totalAmount = totalSalesTax = 0;
 
-    pList && pList.forEach((product) => {
+    pList && pList.map((product) => {
         let productTotal = (product.price * product.qty) + product.basicSalesTax + product.importDuty;
         let productTax = product.basicSalesTax + product.importDuty;
 
@@ -61,22 +60,21 @@ TaxConstructor.prototype.createReceipt = (pList, totalAmount, totalSalesTax) => 
     receipt.salesTaxes = totalSalesTax;
     receipt.total = totalAmount;
 
-    pList && pList.length && pList.forEach((product) => {
-        receipt.items.push({
+    receipt.items =  pList.map((product) => {
+        return {
             qty: product.qty,
             product: product.product,
             price: parseFloat((product.price + product.basicSalesTax + product.importDuty).toFixed(2))
-        });
-    })
+        };
+    });
 
     return receipt;
 }
 
 const createShoppingCart = (productList) => {
-    let purchaseReceipt, 
-        productObj = new TaxConstructor(productList);
+    let purchaseReceipt, productObj = new TaxConstructor(productList);
 
-    purchaseReceipt = productObj.getReceipt;
+    purchaseReceipt = productObj.receipt;
 
     if (purchaseReceipt) {
         purchaseReceipt.items && purchaseReceipt.items.length &&

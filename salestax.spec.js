@@ -63,7 +63,7 @@ describe('salesTax', () => {
             total: 29.83
         }
 
-        expect(productList.getReceipt).toEqual(expectedReceipt);
+        expect(productList.receipt).toEqual(expectedReceipt);
     })
 
 });

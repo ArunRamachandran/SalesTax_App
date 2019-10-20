@@ -1,7 +1,7 @@
 /**
  * 
- * @param {flotValue} value
- * @output roundingOff to nearest 0.05 
+ * @param {float} value
+ * @return value roundingOff to nearest 0.05 
  * 
  * ex. roundingRule(2.51) --> 2.55
  *     roundingRule(2.50) --> 2.50
